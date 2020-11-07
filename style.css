@@ -1,0 +1,35 @@
+/* @theme architecture */
+
+@import 'default';
+
+section {
+  font-family: 'Arial', 'Hiragino Maru Gothic ProN';
+  font-size: 32px;
+  padding: 40px;
+}
+
+section.title h1 {
+  font-family: 'Arial', 'Hiragino Kaku Gothic ProN';
+  font-size: 60px;
+  text-align: center;
+}
+
+section.title {
+  font-family: 'Arial', 'Hiragino Maru Gothic ProN';
+  font-size: 36px;
+  text-align: center;
+  padding: 40px;
+}
+
+section.main h1 {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+}
+
+section.main h2 {
+  font-size: 32px;
+  position: absolute;
+  left: 50px;
+  top: 90px;
+}
