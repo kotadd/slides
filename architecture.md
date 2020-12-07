@@ -1,6 +1,6 @@
 ---
 marp: true
-theme: architecture
+theme: common
 paginate: true
 ---
 <!--
