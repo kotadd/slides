@@ -12,12 +12,25 @@ class: title
 ---
 # NodeJSとは何か
 
-JavaScriptが(C++と同様に)ファイル操作などマシンに近い処理を実施することができる、V8(ECMA Script)を利用できるようにしたもの。
-**→ 非同期型イベント駆動の JavaScript**
-
+JavaScriptが(C++と同様に)ファイル操作などマシンに近い処理を実施することができる、V8(ECMA Script)を利用できるようにした**JavaScriptの実行環境**
 <!--
 class: noclass
 _footer: 参考：https://www.udemy.com/course/understand-nodejs/ \n 　　　https://nodejs.org/ja/about/
+-->
+
+---
+
+# 言語の抽象度
+
+* Javascript（ブラウザ）
+* C/C++, PHP, Python (PC) <- Node.JS
+* Assembly Language
+* Macine Language
+
+→ node index.jsを実行したまま変更が即時反映しないのは、V8で変換されている部分(->Macine Language)が再実行されないから。
+
+<!--
+_footer: 参考：
 -->
 
 ---
@@ -27,9 +40,55 @@ _footer: 参考：https://www.udemy.com/course/understand-nodejs/ \n 　　　ht
   * Event Loop
   * Single Thread
 
+**→大量の同時接続をさばけるネットワークアプリケーションの構築がしたい**
+
 <!--
 class: noclass
 _footer: 参考：https://nodejs.org/en/docs/guides/
+-->
+
+---
+
+# コラム：C10K問題
+
+apache-> nginxの時代から騒がれていた問題。
+
+> ハードウェアの性能上は問題がなくても、クライアント数があまりにも多くなるとサーバがパンクする問題のこと。
+C は「Client（クライアント）」の頭文字、10K は「1 万台」を意味する。
+「クライアント 1 万台問題」ともいわれる。
+
+
+<!--
+_footer: 参考：https://d.hatena.ne.jp/keyword/C10K%20%E5%95%8F%E9%A1%8C
+-->
+
+---
+
+# コラム：apache と nginx
+
+## apache: マルチスレッド・マルチプロセス
+
+リクエストに応じてスレッド/プロセスを立ち上げる仕組み。
+スレッド/プロセスが増えるほどメモリ使用率が上昇するため、**コンテキストスイッチ**が多く発生し、**C10K問題**が発生する。
+
+## nginx: イベント駆動
+
+イベントが発生するまで待機し、発生したイベントの種類に応じて実行される。
+
+<!--
+class: noclass
+_footer: 参考：https://qiita.com/i-tanaka730/items/79e8e2c3ceb2bde51436 \n　　　https://blog.mosuke.tech/entry/2016/06/04/180122/
+-->
+
+---
+
+# コラム：コンテキストスイッチ
+
+> コンテキストスイッチとは、コンピュータの処理装置（CPU）が現在実行している処理の流れ（プロセス、スレッド）を一時停止し、別のものに切り替えて実行を再開すること。
+
+
+<!--
+_footer: 参考：http://e-words.jp/w/%E3%82%B3%E3%83%B3%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81.html
 -->
 
 ---
@@ -77,13 +136,47 @@ _footer: 参考：https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/
 -->
 
 ---
+# コラム：Non-blocking I/OとNodeJS
 
+Non-blocking I/Oを利用しているものは複数ある。
+> Python: Twisted
+> Ruby: EventMachine
+> Perl: ColoのAnyEvent
+
+だが、どれもNon-BlockingのI/Oを強制していないため、スレッドで書かれた同様の処理をするプログラムよりも遅い場合がある。
+
+**-> NodeJSはNon-Blocking I/O の使用を強制する**
+
+<!--
+_footer: 参考：https://badatmath.hatenablog.com/entry/20101020/1287587240
+-->
+
+---
+
+# NodeJSはクライアントサイドでは利用されないのか
+
+NodeJSの**コアの機能**はサーバーサイドで利用される。だが、あくまでNodeJSはJavascriptをブラウザ上だけでなくOSのシステムに関与可能にするための**実行環境**を指しているため、クライアントサイドでもNodeJS自体は利用される。
+
+例：NodeJSを利用しているもの
+1. Babel: ES6以降のコードをES5に変換する際に利用される
+2. Jest: テストツール
+3. ESLint: コード検証ツール
+4. Gatsby: 静的サイトのビルド
+
+<!--
+_footer: 参考：https://qiita.com/non_cal/items/a8fee0b7ad96e67713eb
+-->
+
+---
+---
+
+---
 # Event Loop
 
 ![bg 60%](./nodejs/EventLoop.png)
 
 <!--
-class: main
+class: noclass
 _footer: 参考：https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
 -->
 
@@ -123,33 +216,3 @@ someAsyncOperation(() => { // do someAsyncOperation which takes 95 ms to complet
 });
 ```
 ---
-# コラム：apache と nginx
-
-## apache: スレッド
-
-実行スタックをコピーする必要がある。スレッドが増えるほどメモリ使用率が上昇する。
-
-## nginx: イベントループ
-
-シングルスレッドなので、メモリで有意。
-ただし、コードのどこかでブロックする処理が発生するとプロセス全体がストップする。
-
-<!--
-class: noclass
--->
-
----
-# コラム：Non-blocking I/OとNodeJS
-
-Non-blocking I/Oを利用しているものは複数ある。
-> Python: Twisted
-> Ruby: EventMachine
-> Perl: ColoのAnyEvent
-
-だが、どれもNon-BlockingのI/Oを強制していないため、スレッドで書かれた同様の処理をするプログラムよりも遅い場合がある。
-
-**-> NodeJSはNon-Blocking I/O の使用を強制する**
-
-<!--
-_footer: 参考：https://badatmath.hatenablog.com/entry/20101020/1287587240
--->
