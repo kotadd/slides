@@ -26,7 +26,7 @@ _footer: 参考：https://www.udemy.com/course/understand-Node.js/ \n 　　　h
 # トピック
 
 1. Node.js Runtime
-2.
+2. Non-blocking
 
 ---
 
@@ -53,10 +53,6 @@ JavaScript はブラウザで実行することを目的としていたため、
 <!--
 class: noclass
 -->
-
----
-
-# LIBUV
 
 ---
 

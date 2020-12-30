@@ -280,6 +280,27 @@ Kail.build()
 
 ---
 
+# コラム：Node.js 以前のモジュール
+
+```JavaScript
+var fightModule = (function () {
+  function fight(char1, char2) {
+    var attack1 = Math.floor(Math.random() * char1.length)
+    var attack2 = Math.floor(Math.random() * char2.length)
+    return attack1 > attack2 ? `${char1} wins` : `${char2} wins`
+  }
+
+  return {
+    fight: fight,
+  }
+})()
+```
+
+× global namespace の汚染
+× html で script を読み込む順序に依存
+
+---
+
 # EOP
 
 <!--
