@@ -14,7 +14,8 @@ class: title
 
 # Node.js とは
 
-ファイル操作などマシンに近い処理を行う、V8(ECMA Script)を利用できるようにした**JavaScript の実行環境**
+V8 JavaScript エンジン上に構築された JavaScript の実行環境。
+イベント化されたファイルの入出力などマシンに近い処理を行う。
 
 <!--
 class: noclass
@@ -187,52 +188,6 @@ Node.js の**コアの機能**はサーバーサイドで利用される。だ�
 
 <!--
 _footer: 参考：https://qiita.com/non_cal/items/a8fee0b7ad96e67713eb
--->
-
----
-
-# コラム：V8 Engine
-
-- Chrome に利用されている C++の JavaScript engine
-- Node.js の標準 runtime
-- JIT compiler を実装している
-- 内部的に複数のスレッドを利用している
-
-<!--
-_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e
--->
-
----
-
-# コラム：V8 Engine
-
-- Inlining
-  - 呼び出し元の関数のコードを呼び出し先の実装に置き換えること
-- Hidden class
-  - dynamic properties を同じ順番で初期化した方が効率的になる
-  - [動作の図](https://miro.medium.com/max/700/1*spJ8v7GWivxZZzTAzqVPtA.png)
-  - Inline caching
-- Compilation to machine code
-- Garbage collection
-
-<!--
-_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e
--->
-
----
-
-# コラム：V8 Engine
-
-## 効率的な JavaScript の書き方
-
-1. object の初期化は同じ順序で行うこと
-2. constructor で全ての property をセットすること
-3. (inline caching により) 同じメソッドを繰り返し実行するコードの方が異なるメソッドを一度だけ実行するよりも速い
-4. key が incremental でない疎な配列を避ける。大きな配列に事前に割り当てることや配列の要素を削除しないようにする。（key が疎になるため）
-5. 31bit より大きい数字は V8 が box するため、できる限り 31bit の符号付き数字を使う
-
-<!--
-_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e
 -->
 
 ---

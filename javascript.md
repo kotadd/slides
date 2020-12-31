@@ -25,13 +25,26 @@ https://developer.mozilla.org/ja/docs/Web/JavaScript
 1. JavaScript Engine
    1. Memory Heap
    2. Call Stack
+   3. Callback Queue
+   4. Event Loop
 2. スコープ
-3. プロトタイプ
-4. this
+3. プロトタイプチェーン
+4. this Keyword
    1. アロー関数
 
 <!--
 class: noclass
+-->
+
+---
+
+# JavaScript Engine (V8)
+
+![bg 90%](https://images.ctfassets.net/aq13lwl6616q/3o7Q3edCrVJG9Zzj6VMZ1K/28136a643636dfa04090f3fb5c5467ff/javascript_engine.png)
+
+<!--
+class: main
+_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
 -->
 
 ---
@@ -53,9 +66,38 @@ _footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-wor
 
 発生するリスク：メモリリーク
 
+```JavaScript
+// メモリリークの例
+var person = {
+  first: "kota",
+  last: "nishinaka"
+};
+
+person = "knishina";
+```
+
 <!--
 class: noclass
 _footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-work-part-1-b0bacc073cf
+-->
+
+---
+
+# コラム：hoisting
+
+コンパイル段階ですべての変数や関数の宣言をメモリに入れること
+
+- function は完全に hoisting される
+  - コードベースのどこからでも呼び出すことができる
+- var 変数は hoisting されて未定義の値に初期化される
+  - 初期化される前にコード内で使用された場合は、undefined を返す
+    → メモリリークなどの原因になる
+- let 変数と const 変数は hoisting されているが値は初期化されない
+  - 宣言される前に使用された場合、参照エラーを投げる（推奨）
+
+<!--
+_footer: 参考: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+
 -->
 
 ---
@@ -67,11 +109,51 @@ _footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-wor
 - シングルスレッド＝シングルコールスタック
 
 > The Call Stack is a data structure which records basically where in the program we are.
-> → 　 Call Stack はプログラムのどこにいるのかを記録するデータ構造である
+> → Call Stack はプログラムのどこにいるのかを記録するデータ構造である
 
 <!--
 class: noclass
 _footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-work-part-1-b0bacc073cf
+-->
+
+---
+
+# Event Loop and Callback Queue
+
+- ブラウザで JavaScript のコードを実行すると、エンジンがコードの解析を開始し、各行が実行され、コールスタックにポップイン・ポップアウトされる。
+- パーサが Web API で実行する処理をブラウザに渡して処理する。メソッドの実行が終了すると、JavaScript が実行する必要のあるものを Callback Queue に入れる。
+- Callback Queue は、コールスタックが完全に空になるまで実行できない。そのため、Event Loop は常にコールスタックが空になっているかどうかをチェックし、コールバックキューにあるものをコールスタックに戻す。
+- コールスタックに戻ってきたら実行して、スタックからポップアウトする。
+
+<!--
+_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# コラム：Job Queue
+
+ES6 で Promise などを優先する Job Queue という概念が追加された
+
+```JavaScript
+// 1 Callback Queue ~ Task Queue
+setTimeout(() => {
+  console.log("1", "is the loneliest number");
+}, 0);
+setTimeout(() => {
+  console.log("2", "can be as bad as one");
+}, 10);
+
+// 2 Job Queue ~ Microtask Queue
+Promise.resolve("hi").then(data => console.log("2", data));
+
+// 3 Call Stack
+console.log("3", "is a crowd");
+```
+
+<!--
+_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+
 -->
 
 ---
@@ -170,6 +252,7 @@ secret // undefined
 
 <!--
 class: main
+_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
 -->
 
 ---
@@ -181,7 +264,7 @@ Date.prototype.lastYear = function(){
   return this.getFullYear() - 1;
 }
 
-const date = new Date('1900-10-10')
+const date = new Date('1991-07-12')
 date.lastYear()
 
 date.__proto__ === Date.prototype
@@ -192,6 +275,8 @@ date.__proto__ === Date.prototype
 # コラム：JS の "==" の動き
 
 https://dorey.github.io/JavaScript-Equality-Table/
+
+様々な type：https://repl.it/@kotadd/typesjs#index.js
 
 <!--
 class: noclass
@@ -242,6 +327,19 @@ Array.prototype.map3 = () => {
 ```
 
 → レキシカルスコープ
+[時間があればこっちの例も全て見ておく](https://repl.it/@kotadd/scope#index.js)
+
+---
+
+# this Keyword の 4 type
+
+1. new keyword binding - 作成された object が this の対象になる
+2. implicit binding - 呼んでいる object が this の対象となる
+3. explicit binding - bind を使えば this の対象を変更できる
+4. メソッド内での arrow functions - lexically scope になるため、window object が this となる。
+   ( this を呼ぶアロー関数を返す HOF を作成すると object が対象となる)
+
+[上記の例](https://repl.it/@kotadd/scope#fourThisPatterns.js)
 
 ---
 
@@ -266,6 +364,7 @@ function Human(name, age) {
 }
 
 Human.prototype.build = function () {
+  console.log(this)
   function building() {
     return 'built by ' + this.name
   }
@@ -298,6 +397,436 @@ var fightModule = (function () {
 
 × global namespace の汚染
 × html で script を読み込む順序に依存
+
+---
+
+# call, apply, bind
+
+```JavaScript
+const a = {
+  name: "a",
+  say(str1, str2) {
+    return str1 + ' said hello to ' + str2;
+  },
+  callName() {
+    return this.name;
+  }
+};
+const anotherObj = {}
+
+a.say.call(anotherObj, 'a', 'b');
+a.say.apply(anotherObj, ['a', 'b']);
+const func = a.say.bind(anotherObj, 'a', 'b');
+func()
+```
+
+bind はメソッド内の this を実行時点のもので固定することも可能。
+
+---
+
+# コラム：効率的な実装
+
+非効率な実装
+
+```JavaScript
+function run(idx) {
+  const bigArray = new Array(33800000).fill("😄");
+  console.log("created!");
+  return bigArray[idx];
+}
+
+const getEfficient = run()
+
+```
+
+---
+
+# コラム：効率的な実装
+
+効率的な実装（Memoization）
+
+```JavaScript
+function run(idx) {
+  const bigArray = new Array(33800000).fill("😄");
+  console.log("created!");
+  return function(idx) {
+    return bigArray[idx];
+  };
+}
+
+const getEfficient = run()
+
+```
+
+---
+
+# コラム：効率的な実装（Memoization）
+
+```JavaScript
+functions memoizedAddTo80() {
+  let cache = {}
+  return function(n) {
+    if (n in cache) {
+      return cache[n]
+    } else {
+      console.log('long time...')
+      cache[n] = n + 80
+      return cache[n]
+    }
+  }
+}
+const memoized = memoizedAddTo80()
+
+console.log('1.', memoized(5))
+```
+
+<!--
+class: noclass
+-->
+
+---
+
+# Promise の方法
+
+- parallel
+  - 同時実行で全て返す
+- race
+  - 一番速いものだけ返す
+- sequence
+  - 順番に実行して全て返す
+
+https://repl.it/@kotadd/async-2#index.js
+
+<!--
+_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# コラム：V8 Engine
+
+- Chrome に利用されている C++の JavaScript engine
+- Node.js の標準 runtime
+- JIT compiler を実装している
+- 内部的に複数のスレッドを利用している
+
+<!--
+_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e
+-->
+
+---
+
+# コラム：V8 Engine
+
+- Inlining
+  - 呼び出し元の関数のコードを呼び出し先の実装に置き換えること
+- Hidden class
+  - dynamic properties を同じ順番で初期化した方が効率的になる
+  - [動作の図](https://miro.medium.com/max/700/1*spJ8v7GWivxZZzTAzqVPtA.png)
+  - Inline caching
+- Compilation to machine code
+- Garbage collection
+
+<!--
+_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e
+-->
+
+---
+
+# コラム：V8 Engine
+
+## 効率的な JavaScript の書き方
+
+1. object の初期化は同じ順序で行うこと(Hidden Classes)
+2. constructor で全ての property をセットすること
+3. 同じメソッドを繰り返し実行するコードの方が異なるメソッドを一度だけ実行するよりも速い(inline caching)
+4. key が incremental でない疎な配列を避ける。大きな配列に事前に割り当てることや配列の要素を削除しないようにする。（key が疎になるため）
+5. 31bit より大きい数字は V8 が box するため、できる限り 31bit の符号付き数字を使う
+
+<!--
+_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e
+-->
+
+---
+
+# OOP
+
+○ コードをクリーンにできる
+× 継承におけるデメリット
+
+- Tight Coupling: 継承元の Base となっている Class に新しいメソッドを追加すると、子クラス全てに影響する
+- Hierarchy: 親クラスの一部しか利用したくない時でも全て継承する
+
+→ 大量の Obj が必要で、操作の変更があまりなく、状態を持っているものに関しては向いている（ゲームキャラクターなど）
+
+---
+
+# OOP
+
+非効率な実装
+
+```JavaScript
+const elf1 = {
+  name: 'Dobby',
+  type: 'house',
+  weapon: 'cloth',
+  say: function() {
+    return `Hi, my name is ${this.name}, I am a ${this.type} elf.`
+  }
+  attack: function() {
+    return `attack with ${this.weapon}`
+  }
+}
+
+const elf2 = { ... } // ほとんど同じ内容をもう一度書く
+```
+
+<!--
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# OOP
+
+Factory Functions
+
+```JavaScript
+function createElf(name, type, weapon) {
+  return {
+    name: name,
+    type: type,
+    weapon: weapon,
+    say() {
+      return `Hi, my name is ${name}, I am a ${type} elf.`;
+    },
+    attack() {
+      return `${name} attacks with ${weapon}`;
+    }
+  };
+}
+const dobby = createElf("Dobby", "house", "cloth");
+```
+
+<!--
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# OOP
+
+Stores
+
+```JavaScript
+const elfMethodsStore = {
+  attack() {
+    return `attack with ${this.weapon}`;
+  },
+  say() {
+    return `Hi, my name is ${this.name}, I am a ${this.type} elf.`;
+  }
+};
+function createElf(name, type, weapon) {
+  return { name, type, weapon };
+}
+const dobby = createElf("Dobby", "house", "stick");
+dobby.attack = elfMethodsStore.attack;
+dobby.say = elfMethodsStore.say;
+```
+
+<!--
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# OOP
+
+Object.create (prototypal inheritance)
+
+```JavaScript
+const elfMethodsStore = {
+  attack() {
+    return `attack with ${this.weapon}`;
+  }
+};
+
+function createElf(weapon) {
+// this creates the __proto__ chain to the store
+  let newElf = Object.create(elfMethodsStore);
+  newElf.weapon = weapon;
+  return newElf;
+}
+
+const dobby = createElf("stick");
+```
+
+<!--
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# OOP
+
+Constructor Functions (new Keyword)
+
+```JavaScript
+function Elf(name, type, weapon) {
+  this.name = name;
+  this.type = type;
+  this.weapon = weapon;
+}
+
+const dobby = new Elf("Dobby", "house", "cloth");
+
+// cannot be an arrow function
+Elf.prototype.attack = function() {
+  return `attack with ${this.weapon}`;
+};
+dobby.attack();
+```
+
+<!--
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# OOP
+
+Class
+
+```JavaScript
+class Character {
+  constructor(name, weapon) {
+    this.name = name;
+    this.weapon = weapon;
+  }
+  attack() {
+    return `attack with ${this.weapon}`;
+  }
+}
+class Ogre extends Character {
+  constructor(name, weapon, color) {
+    super(name, weapon);
+    this.color = color;
+  }
+}
+```
+
+<!--
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# FP
+
+○ テスタブルな実装ができる
+△ 状態をもったり、API にアクセスする必要のあるものが出てくるため、全てを純粋関数にすることはできない。
+
+---
+
+# FP
+
+```JavaScript
+const compose = (fn1, fn2) => data => fn1(fn2(data));
+const pipe = (fn1, fn2) => data => fn2(fn1(data));
+const multiplyBy3 = num => num * 3;
+const makePositive = num => Math.abs(num);
+
+const composeFn = compose(multiplyBy3, makePositive);
+const pipeFn = pipe(multiplyBy3, makePositive);
+
+composeFn(-50); // 150
+pipeFn(-50); // 150
+```
+
+[EC システムの例](https://repl.it/@kotadd/FP-9#index.js)
+
+<!--
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# コラム：Immutability は効率的なのか
+
+単純にコピーして要素を再作成するのなら、
+メモリや速度の観点から非効率ではないのか？
+
+```JavaScript
+const obj1 = { a: 'a', b: 'b' }
+// obj1.c = 'c'
+
+// Immutableな実装
+const obj2 = Object.assign({}, obj1, {c: 'c'} )
+```
+
+<!--
+_footer: https://www.youtube.com/watch?v=Wo0qiGPSV-s
+-->
+
+---
+
+# コラム：Immutability は効率的なのか
+
+## Structural Sharing を利用しているため、非効率にならない
+
+<!--
+_footer: https://ja.wikipedia.org/wiki/%E6%B0%B8%E7%B6%9A%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0
+-->
+
+---
+
+# コラム：Immutability は効率的なのか
+
+![bg 50%](https://hypirion.com/sha/29bd11f8507cddd860f00fc03166fc84e7a0d0c0cf2e684066a7acc3076cd033.png)
+
+<!--
+class: main
+_footer: https://hypirion.com/musings/understanding-persistent-vector-pt-1
+-->
+
+---
+
+# コラム：Immutability は効率的なのか
+
+## メリット
+
+- Predictability
+- Performance
+- Mutation Tracking
+
+→ 可能な限り Immutable な実装にしていく方が良い
+
+<!--
+class: noclass
+_footer: https://stackoverflow.com/questions/34385243/why-is-immutability-so-important-or-needed-in-javascript
+-->
+
+---
+
+# コラム：Private Fields
+
+```JavaScript
+class Rectangle {
+  #height = 0;
+  #width;
+  constructor(height, width) {
+    this.#height = height;
+    this.#width = width;
+  }
+  getHeight() { return this.#height }
+}
+```
+
+<!--
+class: noclass
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
 
 ---
 
