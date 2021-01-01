@@ -551,6 +551,8 @@ _footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-
 
 # OOP
 
+データと振る舞いはおなじオブジェクトにあるべき
+
 ○ コードをクリーンにできる
 × 継承におけるデメリット
 
@@ -723,6 +725,8 @@ _footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced
 ---
 
 # FP
+
+データと振る舞いは分けるべき
 
 ○ テスタブルな実装ができる
 △ 状態をもったり、API にアクセスする必要のあるものが出てくるため、全てを純粋関数にすることはできない。
