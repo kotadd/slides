@@ -24,12 +24,26 @@ section.title {
 section.main h1 {
   position: absolute;
   left: 50px;
-  top: 50px;
+  top: 60px;
 }
 
 section.main h2 {
   font-size: 32px;
   position: absolute;
   left: 50px;
-  top: 90px;
+  top: 100px;
+}
+
+section.main h3 {
+  font-size: 28px;
+  position: absolute;
+  left: 50px;
+  top: 500px;
+}
+
+section.main h4 {
+  font-size: 26px;
+  position: absolute;
+  left: 50px;
+  top: 580px;
 }

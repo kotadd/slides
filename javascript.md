@@ -49,6 +49,30 @@ _footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the
 
 ---
 
+# コラム：JavaScript は Interpreter ではないのか
+
+### 初期のネットスケープ社が利用していた Spider Monkey(JavaScript エンジン)では optimizer がなかった
+
+![bg 80%](https://miro.medium.com/max/2000/1*JL_8RT-vEMDs5OKvOjWOzA.png)
+
+<!--
+_footer: https://medium.com/jspoint/how-javascript-works-in-browser-and-node-ab7d0d09ac2f
+-->
+
+---
+
+# コラム：JavaScript は Interpreter ではないのか
+
+![bg 80%](https://miro.medium.com/max/2000/1*5XSWl0QXq-5ObZ6sF_aHEQ.png)
+
+#### Google Chrome において Google Map を動かそうとしたときに動作が鈍かったため、V8 を開発した
+
+<!--
+_footer: https://medium.com/jspoint/how-javascript-works-in-browser-and-node-ab7d0d09ac2f
+-->
+
+---
+
 # JavaScript Engine
 
 ![bg 60%](https://miro.medium.com/max/700/1*4lHHyfEhVB0LnQ3HlhSs8g.png)
@@ -126,7 +150,7 @@ _footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-wor
 - コールスタックに戻ってきたら実行して、スタックからポップアウトする。
 
 <!--
-_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts \n　　　https://www.youtube.com/watch?v=8aGhZQkoFbQ&feature=emb_logo
 -->
 
 ---
@@ -511,7 +535,7 @@ _footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the
 - 内部的に複数のスレッドを利用している
 
 <!--
-_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e
+_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e \n　　　https://www.digitalocean.com/community/tutorials/js-v8-engine
 -->
 
 ---
@@ -751,7 +775,7 @@ pipeFn(-50); // 150
 [EC システムの例](https://repl.it/@kotadd/FP-9#index.js)
 
 <!--
-_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
 -->
 
 ---
@@ -770,7 +794,7 @@ const obj2 = Object.assign({}, obj1, {c: 'c'} )
 ```
 
 <!--
-_footer: https://www.youtube.com/watch?v=Wo0qiGPSV-s
+_footer: 参考：https://www.youtube.com/watch?v=Wo0qiGPSV-s
 -->
 
 ---
@@ -780,7 +804,7 @@ _footer: https://www.youtube.com/watch?v=Wo0qiGPSV-s
 ## Structural Sharing を利用しているため、非効率にならない
 
 <!--
-_footer: https://ja.wikipedia.org/wiki/%E6%B0%B8%E7%B6%9A%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0
+_footer: 参考：https://ja.wikipedia.org/wiki/%E6%B0%B8%E7%B6%9A%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0
 -->
 
 ---
@@ -808,7 +832,7 @@ _footer: https://hypirion.com/musings/understanding-persistent-vector-pt-1
 
 <!--
 class: noclass
-_footer: https://stackoverflow.com/questions/34385243/why-is-immutability-so-important-or-needed-in-javascript
+_footer: 参考：https://stackoverflow.com/questions/34385243/why-is-immutability-so-important-or-needed-in-javascript
 -->
 
 ---
