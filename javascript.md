@@ -89,9 +89,7 @@ _footer: https://medium.com/jspoint/how-javascript-works-in-browser-and-node-ab7
 
 # コラム：JavaScript は Interpreter ではないのか
 
-![bg 80%](https://marcradziwill.com/assets/images/mastering-javascript-high-performance/8516df72-1200.webp)
-
-#### V8 の変換の流れ
+![bg 90%](https://marcradziwill.com/assets/images/mastering-javascript-high-performance/8516df72-1200.webp)
 
 <!--
 _footer: https://marcradziwill.com/blog/mastering-javascript-high-performance
@@ -578,7 +576,7 @@ _footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-
 - Garbage collection
 
 <!--
-_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e \n　　　https://marcradziwill.com/blog/mastering-javascript-high-performance/#hiddenclasses
+_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e \n　　　https://marcradziwill.com/blog/mastering-javascript-high-performance/#hiddenclasses \n 　　　https://engineering.linecorp.com/ja/blog/v8-hidden-class/
 -->
 
 ---
