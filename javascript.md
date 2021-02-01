@@ -4,7 +4,7 @@ theme: common
 paginate: true
 ---
 
-# Javascript
+# Javascript の基礎
 
 <!--
 class: title
@@ -20,17 +20,33 @@ https://developer.mozilla.org/ja/docs/Web/JavaScript
 
 ---
 
-# トピック
+# JavaScript とは
 
-1. JavaScript Engine
+| 説明文             | =>  | トピック               |
+| ------------------ | --- | ---------------------- |
+| プロトタイプベース | =>  | prototype チェーン     |
+| シングルスレッド   | =>  | JavaScript エンジン    |
+| 動的型付けを持ち　 | =>  | 　ダイナミックスコープ |
+| オブジェクト指向　 | =>  | OOP                    |
+| 命令形　           | =>  | 　手続き的             |
+| 宣言的　           | =>  | FP                     |
+
+<!--
+class: main
+-->
+
+---
+
+# メイントピック
+
+1. JavaScript エンジンの仕組みについて
    1. Memory Heap
    2. Call Stack
-   3. Callback Queue
-   4. Event Loop
-2. スコープ
-3. プロトタイプチェーン
-4. this Keyword
-   1. アロー関数
+   3. Callback Queue and Event Loop
+2. スコープ と プロトタイプチェーン
+3. this Keyword と アロー関数
+4. Promise の方法
+5. パラダイム（OOP and FP）
 
 <!--
 class: noclass
@@ -133,7 +149,7 @@ _footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-wor
 
 # コラム：hoisting
 
-コンパイル段階ですべての変数や関数の宣言をメモリに入れること
+コンパイル段階ですべての変数や関数の宣言を、関数スコープ内でメモリに入れること
 
 - function は完全に hoisting される
   - コードベースのどこからでも呼び出すことができる
@@ -144,7 +160,7 @@ _footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-wor
   - 宣言される前に使用された場合、参照エラーを投げる（推奨）
 
 <!--
-_footer: 参考: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+_footer: 参考: https://developer.mozilla.org/ja/docs/Glossary/Hoisting
 
 -->
 
@@ -186,11 +202,11 @@ ES6 で Promise などを優先する Job Queue という概念が追加され�
 ```JavaScript
 // 1 Callback Queue ~ Task Queue
 setTimeout(() => {
-  console.log("1", "is the loneliest number");
+  console.log("1.1", "is the loneliest number");
 }, 0);
 setTimeout(() => {
-  console.log("2", "can be as bad as one");
-}, 10);
+  console.log("1.2", "can be as bad as one");
+}, 0);
 
 // 2 Job Queue ~ Microtask Queue
 Promise.resolve("hi").then(data => console.log("2", data));
@@ -296,7 +312,7 @@ secret // undefined
 
 # プロトタイプチェーン
 
-![bg 70%](https://images.ctfassets.net/aq13lwl6616q/4U7Xxx4CIyG6bHmpOp6ujj/00720fdac4cb138ed97e80da74730cd2/prototype_chain.png)
+![bg 60%](https://images.ctfassets.net/aq13lwl6616q/4U7Xxx4CIyG6bHmpOp6ujj/00720fdac4cb138ed97e80da74730cd2/prototype_chain.png)
 
 <!--
 class: main
@@ -308,15 +324,63 @@ _footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the
 # プロトタイプの例
 
 ```JavaScript
+const date = new Date('1991-07-12')
+
 Date.prototype.lastYear = function(){
   return this.getFullYear() - 1;
 }
 
-const date = new Date('1991-07-12')
 date.lastYear()
 
 date.__proto__ === Date.prototype
 ```
+
+<!--
+class: noclass
+-->
+
+---
+
+# コラム：Object.create メソッド
+
+Object.create メソッドを使うと、第一引数に指定した prototype オブジェクトを継承した新しいオブジェクトを作成できる。
+
+```JavaScript
+// const obj = {} と同じ意味
+const obj = Object.create(Object.prototype);
+// `obj`は`Object.prototype`を継承している
+console.log(obj.hasOwnProperty === Object.prototype.hasOwnProperty); // => true
+```
+
+→ Object.create(null) で Map オブジェクトの代わりに利用できたが、ES6 で Map が実装されたのでもう使わない。
+
+<!--
+_footer: https://jsprimer.net/basic/prototype-object/
+-->
+
+---
+
+# コラム：Object.assign メソッド
+
+オブジェクトのマージと複製を行うが、shallow copy をするので、下記のように同じメソッドを参照する。。
+
+```JavaScript
+const shallowClone = (obj) => {
+    return Object.assign({}, obj);
+};
+const obj = {
+    level: 1,
+    nest: {
+        level: 2
+    },
+};
+const cloneObj = shallowClone(obj);
+console.log(cloneObj.nest === obj.nest); // => true
+```
+
+<!--
+_footer: https://jsprimer.net/basic/prototype-object/
+-->
 
 ---
 
@@ -329,6 +393,22 @@ https://dorey.github.io/JavaScript-Equality-Table/
 <!--
 class: noclass
 -->
+
+---
+
+# スコープ
+
+内側から外側は参照できるが逆はできない。
+
+```JavaScript
+function doHeavyTask() {}
+const startTime = Date.now();
+doHeavyTask();
+const endTime = Date.now();
+console.log(`実行時間は${endTime - startTime}ミリ秒`);
+```
+
+上記の処理を改善するには？
 
 ---
 
@@ -364,7 +444,7 @@ class: notitle
 ```JavaScript
 Array.prototype.map3 = () => {
   arr = []
-  // console.log('this', this)
+  console.log('this', this)
   for (let i = 0; i < this.length; i++) {
     arr.push(this[i] + ' by map3')
   }
@@ -388,6 +468,7 @@ Array.prototype.map3 = () => {
    ( this を呼ぶアロー関数を返す HOF を作成すると object が対象となる)
 
 [上記の例](https://repl.it/@kotadd/scope#fourThisPatterns.js)
+[this の結果一覧](https://azu.github.io/what-is-this/)
 
 ---
 
@@ -448,7 +529,7 @@ var fightModule = (function () {
 
 ---
 
-# call, apply, bind
+# コラム：call, apply, bind の使い方
 
 ```JavaScript
 const a = {
@@ -477,13 +558,13 @@ bind はメソッド内の this を実行時点のもので固定することも
 非効率な実装
 
 ```JavaScript
-function run(idx) {
+function run1(idx) {
   const bigArray = new Array(33800000).fill("😄");
   console.log("created!");
   return bigArray[idx];
 }
 
-const getEfficient = run()
+run1()
 
 ```
 
@@ -494,7 +575,7 @@ const getEfficient = run()
 効率的な実装（Memoization）
 
 ```JavaScript
-function run(idx) {
+function run2(idx) {
   const bigArray = new Array(33800000).fill("😄");
   console.log("created!");
   return function(idx) {
@@ -502,7 +583,7 @@ function run(idx) {
   };
 }
 
-const getEfficient = run()
+const getEfficient = run2()
 
 ```
 
