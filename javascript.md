@@ -44,7 +44,21 @@ class: noclass
 
 <!--
 class: main
-_footer: 参考：https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# JavaScript Engine (V8)
+
+- Parser: コードをトークンにする
+- [AST](https://astexplorer.net/): トークンを AST に変換する
+- Bytecode: JS と機械語の間のレベルのコード
+- Profiler/Monitor: コードを最適化する
+
+<!--
+class: main
+_footer: 参考：https://docs.google.com/document/d/1VPGK4isl2HhuXIIhTdZZCkjoubF0W1diJyx1WpmoS8c/edit
 -->
 
 ---
@@ -69,6 +83,16 @@ _footer: https://medium.com/jspoint/how-javascript-works-in-browser-and-node-ab7
 
 <!--
 _footer: https://medium.com/jspoint/how-javascript-works-in-browser-and-node-ab7d0d09ac2f
+-->
+
+---
+
+# コラム：JavaScript は Interpreter ではないのか
+
+![bg 90%](https://marcradziwill.com/assets/images/mastering-javascript-high-performance/8516df72-1200.webp)
+
+<!--
+_footer: https://marcradziwill.com/blog/mastering-javascript-high-performance
 -->
 
 ---
@@ -552,7 +576,7 @@ _footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-
 - Garbage collection
 
 <!--
-_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e
+_footer: 参考：https://blog.sessionstack.com/how-JavaScript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e \n　　　https://marcradziwill.com/blog/mastering-javascript-high-performance/#hiddenclasses \n 　　　https://engineering.linecorp.com/ja/blog/v8-hidden-class/
 -->
 
 ---
