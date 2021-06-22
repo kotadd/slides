@@ -133,11 +133,11 @@ _footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-wor
 ```JavaScript
 // メモリリークの例
 var person = {
-  first: "kota",
-  last: "nishinaka"
+  first: "firstname",
+  last: "lastname"
 };
 
-person = "knishina";
+person = "firstname lastname";
 ```
 
 <!--
