@@ -12,14 +12,18 @@ class: title
 
 ---
 
+JavaScript と Node.js の違いを説明できますか？(煽
+
+---
+
 # Node.js とは
 
-V8 JavaScript エンジン上に構築された JavaScript の実行環境。
-イベント化されたファイルの入出力などマシンに近い処理を行う。
+- V8 JavaScript エンジン上に構築された JavaScript の実行環境。
+- イベント化されたファイルの入出力などマシンに近い処理を行う。
 
 <!--
 class: noclass
-_footer: 参考：https://www.udemy.com/course/understand-Node.js/ \n 　　　https://Node.js.org/ja/about/
+_footer: 参考：https://www.udemy.com/course/understand-Node.js/ \n 　　　https://nodejs.org/ja/about/
 -->
 
 ---
@@ -38,6 +42,28 @@ _footer: 参考：https://www.udemy.com/course/understand-Node.js/ \n 　　　h
 <!--
 class: main
 _footer: 参考：https://medium.com/jspoint/how-JavaScript-works-in-browser-and-node-ab7d0d09ac2f
+-->
+
+---
+
+# 参考）JavaScript Engine
+
+![bg 90%](https://images.ctfassets.net/aq13lwl6616q/3o7Q3edCrVJG9Zzj6VMZ1K/28136a643636dfa04090f3fb5c5467ff/javascript_engine.png)
+
+<!--
+class: main
+_footer: https://zerotomastery.io/cheatsheets/javascript-cheatsheet-the-advanced-concepts
+-->
+
+---
+
+# 参考）JavaScript Engine
+
+![bg 60%](https://miro.medium.com/max/700/1*4lHHyfEhVB0LnQ3HlhSs8g.png)
+
+<!--
+class: main
+_footer: 参考：https://blog.sessionstack.com/how-does-JavaScript-actually-work-part-1-b0bacc073cf
 -->
 
 ---
