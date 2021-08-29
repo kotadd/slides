@@ -21,6 +21,10 @@ section.title {
   padding: 40px;
 }
 
+section.black-title h1 {
+  color: black;
+}
+
 section.main h1 {
   position: absolute;
   left: 50px;
